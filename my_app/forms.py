@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
+from my_app.models import Artist
 class ArtistForm(FlaskForm):
     name = StringField('Name', validators = [DataRequired(),
                             Length(min = 1, max = 50)])
