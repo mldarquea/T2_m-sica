@@ -9,7 +9,7 @@ def hello_world():
 
 @app.route('/artists', methods=["GET", "POST"])
 def artists():
-    form = ArtistForm(request.form, csrf_enabled=False)
+    form = ArtistForm(csrf_enabled=False)
     if form.validate_on_submit():
         artist = Artist(name=form.name.data, age=form.age.data)
         db.session.add(artist)
