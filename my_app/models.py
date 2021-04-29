@@ -1,14 +1,22 @@
 from my_app import db
 
-class User(db.Model):
+class Artist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True, nullable=False)
-    email = db.Column(db.String(80), unique=True, nullable=False)
-    password = db.Column(db.String(60), nullable=False)
-    subscriptions = db.relationship('Subscription', backref='subscribed', lazy=True)
+    name = db.Column(db.String(50), unique=True, nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    albums = db.relationship("Album", lazy=True, backref="recorded")
 
     def __repr__(self):
-        return f"User('{self.id}', '{self.username}', '{self.email}')"
+        return f"Artist('{self.id}', '{self.name}', '{self.age}')"
+
+class Album(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True, nullable=False)
+    genre = db.Column(db.String(50), nullable=False)
+    artist_id = db.Column(db.Integer, db.ForeignKey("artist.id"), nullable=False)
+
+    def __repr__(self):
+        return f"Album('{self.id}', '{self.name}', '{self.genre}')"
 
 
 # Run migrations

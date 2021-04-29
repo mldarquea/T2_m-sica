@@ -1,16 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, IntegerField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
+class ArtistForm(FlaskForm):
+    name = StringField('Name', validators = [DataRequired(),
+                            Length(min = 1, max = 50)])
+    age = IntegerField('Age', validators = [DataRequired()])
 
-class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators = [DataRequired(),
-                            Length(min = 2, max = 20)])
-    password = PasswordField('Password', validators = [DataRequired()])
-    confirm_password =PasswordField('Confirm Password',
-                            validators = [DataRequired(), EqualTo('password')])
-    register = SubmitField('Sign Up')
-
-    def validate_username(self, username):
-        user = User.query.filter_by(username = username.data).first()
-        if user:
-            raise ValidationError('That username is taken. Please choose a different one.')
+    def validate_name(self, name):
+        artist = Artist.query.filter_by(name = name.data).first()
+        if artist:
+            raise ValidationError('That name is taken, add another artist')
