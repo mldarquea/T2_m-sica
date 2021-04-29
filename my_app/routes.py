@@ -21,4 +21,5 @@ def artists():
     # if form.hidden_tag().errors:
     #     return "hidden tag"
     artists = Artist.query.all()
-    return jsonify({"artists":artists})
+    a = [i.name for i in artists]
+    return jsonify({"artists":a})
