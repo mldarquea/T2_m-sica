@@ -14,7 +14,7 @@ app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 
 #_______________________________________________________________________________
 # Database config
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///myapp.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI")
 db = SQLAlchemy(app)
 if db:
     print('DB IS READY!!!\n')
