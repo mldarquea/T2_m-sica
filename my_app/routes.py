@@ -14,5 +14,11 @@ def artists():
         artist = Artist(name=form.name.data, age=form.age.data)
         db.session.add(artist)
         db.session.commit()
+    if form.name.errors:
+        return "name error"
+    if form.age.errors:
+        return "age error"
+    if form.hidden_tag.errors:
+        return "hidden tag"
     artists = Artist.query.all()
     return jsonify({"artists":artists})
