@@ -10,7 +10,7 @@ load_dotenv('./env')
 
 # Create app
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
+#app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 
 #_______________________________________________________________________________
 # Database config
