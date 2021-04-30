@@ -1,5 +1,4 @@
 from my_app import db
-import base64
 from sqlalchemy.ext.hybrid import hybrid_property
 
 class Artist(db.Model):
