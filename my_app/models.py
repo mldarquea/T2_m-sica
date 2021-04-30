@@ -7,14 +7,12 @@ class Artist(db.Model):
     name = db.Column(db.String(50), unique=True, nullable=False)
     age = db.Column(db.Integer, nullable=False)
     albums = db.relationship("Album", lazy=True, backref="recorded")
-    #id = id(self)
-
-    #@hybrid_property
+    
     def id_str(self):
         casi_encoded = base64.b64encode(self.name.encode('ascii'))
-        id = casi_encoded.decode('ascii')
+        self.id = casi_encoded.decode('ascii')
         if len(id) > 22:
-            id = id[:21]
+            self.id = id[:21]
         return id 
 
     def __repr__(self):
