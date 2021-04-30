@@ -3,18 +3,18 @@ import base64
 from sqlalchemy.ext.hybrid import hybrid_property
 
 class Artist(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(22), unique=True, nullable=False primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
     age = db.Column(db.Integer, nullable=False)
     albums = db.relationship("Album", lazy=True, backref="recorded")
-    codificar_nombre = id_str()
+    #codificar_nombre = base64.b64encode(self.name.encode('ascii'))
     
-    def id_str(self):
-        casi_encoded = base64.b64encode(self.name.encode('ascii'))
-        self.id = casi_encoded.decode('ascii')
-        if len(id) > 22:
-            self.id = id[:21]
-        return id 
+    # def id_str(self):
+    #     casi_encoded = base64.b64encode(self.name.encode('ascii'))
+    #     self.id = casi_encoded.decode('ascii')
+    #     if len(id) > 22:
+    #         self.id = id[:21]
+    #     return id 
 
     def __repr__(self):
         return f"Artist('{self.id}', '{self.name}', '{self.age}')"
