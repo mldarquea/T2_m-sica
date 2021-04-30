@@ -18,7 +18,7 @@ class Artist(db.Model):
         return id 
 
     def __repr__(self):
-        return f"Artist('{self.id}','{id_str(self)}', '{self.name}', '{self.age}', '{self.albums}')"
+        return f"Artist('{id_str(self)}', '{self.name}', '{self.age}')"
 
 class Album(db.Model):
     id = db.Column(db.Integer, primary_key=True)
