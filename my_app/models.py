@@ -4,12 +4,16 @@ import base64
 class Artist(db.Model):
     id_automatico = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
-    encoded = base64.b64encode(self.name.encode('ascii'))
-    id = encoded.decode('ascii')
-    if len(id) > 22:
-        id = id[:21]
     age = db.Column(db.Integer, nullable=False)
     albums = db.relationship("Album", lazy=True, backref="recorded")
+
+    @hybrid_property
+    def id(self):
+        casi_encoded = base64.b64encode(self.name.encode('ascii'))
+        id = casi_encoded.decode('ascii')
+        if len(id) > 22:
+            id = id[:21]
+        return id 
 
     def __repr__(self):
         return f"Artist('{self.id}', '{self.name}', '{self.age}', '{self.albums}')"
