@@ -6,9 +6,9 @@ class ArtistForm(FlaskForm):
     name = StringField('Name', validators = [DataRequired(),
                             Length(min = 1, max = 50)])
     age = IntegerField('Age', validators = [DataRequired()])
-    id = base64.b64encode(name.encode('ascii')).decode('ascii')
-    if len(id) > 22:
-        id = id[0:21]
+    # id = base64.b64encode(name.encode('ascii')).decode('ascii')
+    # if len(id) > 22:
+    #     id = id[0:21]
 
     def validate_name(self, name):
         artist = Artist.query.filter_by(name = name.data).first()
