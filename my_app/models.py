@@ -4,7 +4,8 @@ import base64
 class Artist(db.Model):
     id_automatico = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
-    id = base64.b64encode(name)
+    encoded = base64.b64encode(name.encode('ascii'))
+    id = encoded.decode('ascii')
     if len(id) > 22:
         id = id[:21]
     age = db.Column(db.Integer, nullable=False)
