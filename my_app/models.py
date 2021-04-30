@@ -1,4 +1,5 @@
 from my_app import db
+import base64
 from sqlalchemy.ext.hybrid import hybrid_property
 
 class Artist(db.Model):
@@ -17,7 +18,7 @@ class Artist(db.Model):
     #     return id 
 
     def __repr__(self):
-        return f"Artist('{self.id}', '{self.name}', '{self.age}')"
+        return f"Artist('{base64.b64encode(self.name.encode('ascii')).decode('ascii')}', '{self.name}', '{self.age}')"
 
 class Album(db.Model):
     id = db.Column(db.Integer, primary_key=True)
