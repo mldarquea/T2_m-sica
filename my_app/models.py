@@ -4,7 +4,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 
 class Artist(db.Model):
     id_obligatorio = db.Column(db.Integer, primary_key=True)
-    id = db.Column(db.String(22), unique=True, nullable=False) #, primary_key=True)
+    id = db.Column(db.String(22), unique=True) #, nullable=False) #, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
     age = db.Column(db.Integer, nullable=False)
     albums = db.relationship("Album", lazy=True, backref="recorded")
