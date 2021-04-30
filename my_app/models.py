@@ -7,7 +7,8 @@ class Artist(db.Model):
     name = db.Column(db.String(50), unique=True, nullable=False)
     age = db.Column(db.Integer, nullable=False)
     albums = db.relationship("Album", lazy=True, backref="recorded")
-
+    id = id()
+    
     @hybrid_property
     def id(self):
         casi_encoded = base64.b64encode(self.name.encode('ascii'))
