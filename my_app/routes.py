@@ -14,7 +14,6 @@ def artists():
     form = ArtistForm(csrf_enabled=False)
     if form.validate_on_submit():
         name = form.name.data
-        print(name)
         en_bytes = form.name.data.encode('ascii')
         en_64 = base64.b64encode(en_bytes)
         id_codificado = en_64.decode('ascii')
@@ -26,10 +25,8 @@ def artists():
         self_id = "https://t2musica.herokuapp.com/" + id_codificado
         albums_id = self_id + "/albums"
         tracks_id = self_id + "/tracks"
-        print(name, "############")
         artist = Artist(id=id_codificado, name=name, age=form.age.data, \
             albums_url=albums_id, tracks_url=tracks_id, self_url=self_id )
-        print(artist.name)
         db.session.add(artist)
         db.session.commit()
     if form.name.errors:
@@ -37,6 +34,8 @@ def artists():
     if form.age.errors:
         return "age error"
     artists = Artist.query.all()
+    for i in artists:
+        print(i.name)
     a = [  {
             "id": i.id,
             "name": str(i.name),
