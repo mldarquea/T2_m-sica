@@ -33,7 +33,14 @@ def artists():
     if form.age.errors:
         return "age error"
     artists = Artist.query.all()
-    a = [str(i) for i in artists]
+    a = [ {
+            "id": i.id,
+            "name": i.name,
+            "age": i.age,
+            "albums": i.albums_url,
+            "tracks": i.tracks_url,
+            "self": i.self_url
+        } for i in artists]
     return jsonify(a), 201
 
 @app.route('/albums', methods=["GET"])

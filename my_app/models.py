@@ -10,8 +10,16 @@ class Artist(db.Model):
     self_url = name = db.Column(db.String(150), unique=True)
     albums = db.relationship("Album", lazy=True, backref="recorded")
      
-    def __repr__(self):
-        return f"id: '{self.id}',\n name:'{self.name}', '{self.age}', '{self.albums_url}', '{self.tracks_url}', '{self.self_url}'"
+    # def __dict__(self):
+    #     return {
+    #         "id": self.id,
+    #         "name": self.name,
+    #         "age": self.age,
+    #         "albums": self.albums_url,
+    #         "tracks": self.tracks_url,
+    #         "self": self.self_url
+    #     }
+        #return f"id: '{self.id}',\n name:'{self.name}', '{self.age}', '{self.albums_url}', '{self.tracks_url}', '{self.self_url}'"
 
 class Album(db.Model):
     id = db.Column(db.String(22), primary_key=True)
@@ -42,4 +50,4 @@ class Song(db.Model):
 
 
 # Run migrations
-#db.create_all()
+db.create_all()
