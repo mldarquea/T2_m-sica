@@ -51,4 +51,3 @@ class Song(db.Model):
 
 # Run migrations
 db.create_all()
-  
