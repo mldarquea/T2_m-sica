@@ -34,4 +34,4 @@ def artists():
         return "age error"
     artists = Artist.query.all()
     a = [str(i) for i in artists]
-    return jsonify({"artists":a}), 201
+    return jsonify(a), 201
