@@ -2,6 +2,7 @@ from my_app import app, db
 from flask import render_template, jsonify, redirect, url_for
 from my_app.models import Artist, Album, Song
 from my_app.forms import ArtistForm, AlbumForm, SongForm
+from flask_restful import Api, Resource, reqparse, abort
 import base64
 
 @app.route('/')
@@ -17,6 +18,9 @@ def artists():
         id_codificado = en_64.decode('ascii')
         if len(id_codificado) > 22:
             id_codificado = id_codificado[:22]
+        result = Artist.query.filter_by(id=id_codificado).first()
+        if result:
+            abort(409, message="Artista ya existente, intenta con otro")
         self_id = "https://t2musica.herokuapp.com/" + id_codificado
         albums_id = self_id + "/albums"
         tracks_id = self_id + "/tracks"
@@ -30,4 +34,4 @@ def artists():
         return "age error"
     artists = Artist.query.all()
     a = [str(i) for i in artists]
-    return jsonify({"artists":a})
+    return jsonify({"artists":a}), 201
