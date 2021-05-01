@@ -1,7 +1,7 @@
 from my_app import app, db
 from flask import render_template, jsonify, redirect, url_for
-from my_app.models import Artist, Album
-from my_app.forms import ArtistForm
+from my_app.models import Artist, Album, Song
+from my_app.forms import ArtistForm, AlbumForm, SongForm
 
 @app.route('/')
 def hello_world():
@@ -11,7 +11,12 @@ def hello_world():
 def artists():
     form = ArtistForm(csrf_enabled=False)
     if form.validate_on_submit():
-        artist = Artist(name=form.name.data, age=form.age.data)
+        en_bytes = form.name.data.encode('ascii')
+        en_64 = base64.b64encode(en_bytes)
+        id_codificado = en_64.decode('ascii')
+        if len(id_codificado) > 22:
+            id_codificado = id_codificado[:22]
+        artist = Artist(name=form.name.data, age=form.age.data, id=id_codificado)
         db.session.add(artist)
         db.session.commit()
     if form.name.errors:

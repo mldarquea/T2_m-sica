@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_restful import Api, Resource, reqparse, abort
 from dotenv import load_dotenv
 import os
 
@@ -18,4 +19,4 @@ if db:
     print('DB IS READY!!!\n')
 
 from my_app import routes
-from my_app import prueba
+#from my_app import prueba
