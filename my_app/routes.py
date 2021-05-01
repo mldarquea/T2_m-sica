@@ -35,3 +35,16 @@ def artists():
     artists = Artist.query.all()
     a = [str(i) for i in artists]
     return jsonify(a), 201
+
+@app.route('/albums', methods=["GET"])
+def albums():
+    form = AlbumForm(csrf_enabled=False)
+    albums = Album.query.all()
+    a = [str(i) for i in albums]
+    return jsonify(a), 201
+
+def tracks():
+    form = SongForm(csrf_enabled=False)
+    tracks = Song.query.all()
+    a = [str(i) for i in tracks]
+    return jsonify(a), 201

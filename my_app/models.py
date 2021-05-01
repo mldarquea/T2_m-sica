@@ -2,7 +2,6 @@ from my_app import db
 from sqlalchemy.ext.hybrid import hybrid_property
 
 class Artist(db.Model):
-    #id_obligatorio = db.Column(db.Integer, primary_key=True)
     id = db.Column(db.String(22), primary_key=True) 
     name = db.Column(db.String(50), unique=True, nullable=False)
     age = db.Column(db.Integer, nullable=False)
@@ -15,7 +14,6 @@ class Artist(db.Model):
         return f"id: '{self.id}',\n name:'{self.name}', '{self.age}', '{self.albums_url}', '{self.tracks_url}', '{self.self_url}'"
 
 class Album(db.Model):
-    #id_obligatorio = db.Column(db.Integer, primary_key=True)
     id = db.Column(db.String(22), primary_key=True)
     artist_id = db.Column(db.String(50), db.ForeignKey("artist.id"), nullable=False)###############
     name = db.Column(db.String(50), unique=True, nullable=False)
@@ -29,7 +27,6 @@ class Album(db.Model):
         return f"Album('{self.id}', '{self.artist_id}','{self.name}', '{self.genre}', '{self.artist_url}', '{self.tracks_url}', '{self.self_url}')"
 
 class Song(db.Model):
-    #id_obligatorio = db.Column(db.Integer, primary_key=True)
     id = db.Column(db.String(22), primary_key=True)
     album_id = db.Column(db.String(22), db.ForeignKey("album.id"), nullable=False) #####################
     name = db.Column(db.String(50), unique=True, nullable=False)
