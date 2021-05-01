@@ -13,6 +13,7 @@ def hello_world():
 def artists():
     form = ArtistForm(csrf_enabled=False)
     if form.validate_on_submit():
+        name = form.name.data
         en_bytes = form.name.data.encode('ascii')
         en_64 = base64.b64encode(en_bytes)
         id_codificado = en_64.decode('ascii')
@@ -24,7 +25,7 @@ def artists():
         self_id = "https://t2musica.herokuapp.com/" + id_codificado
         albums_id = self_id + "/albums"
         tracks_id = self_id + "/tracks"
-        artist = Artist(id=id_codificado, name=form.name.data, age=form.age.data, \
+        artist = Artist(id=id_codificado, name=name, age=form.age.data, \
             albums_url=albums_id, tracks_url=tracks_id, self_url=self_id )
         db.session.add(artist)
         db.session.commit()
