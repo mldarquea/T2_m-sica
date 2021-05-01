@@ -11,7 +11,7 @@ def hello_world():
 
 @app.route('/artists', methods=["GET", "POST"])
 def artists():
-    form = ArtistForm(csrf_enabled=False)
+    form = ArtistForm(csrf=False)
     if form.validate_on_submit():
         en_bytes = form.name.data.encode('ascii')
         en_64 = base64.b64encode(en_bytes)
