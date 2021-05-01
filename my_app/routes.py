@@ -17,7 +17,11 @@ def artists():
         id_codificado = en_64.decode('ascii')
         if len(id_codificado) > 22:
             id_codificado = id_codificado[:22]
-        artist = Artist(name=form.name.data, age=form.age.data, id=id_codificado)
+        self_id = "https://t2musica.herokuapp.com/" + id_codificado
+        albums_id = self_id + "/albums"
+        tracks_id = self_id + "/tracks"
+        artist = Artist(id=id_codificado, name=form.name.data, age=form.age.data, \
+            albums_url=albums_id, tracks_url=tracks_id, self_url=self_id )
         db.session.add(artist)
         db.session.commit()
     if form.name.errors:
