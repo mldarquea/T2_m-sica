@@ -14,9 +14,9 @@ def artists():
     form = ArtistForm(csrf_enabled=False)
     if form.validate_on_submit():
         name = form.name.data
-        en_bytes = form.name.data.encode('ascii')
+        en_bytes = form.name.data.encode('utf-8')
         en_64 = base64.b64encode(en_bytes)
-        id_codificado = en_64.decode('ascii')
+        id_codificado = en_64.decode('utf-8')
         if len(id_codificado) > 22:
             id_codificado = id_codificado[:22]
         result = Artist.query.filter_by(id=id_codificado).first()
@@ -65,9 +65,9 @@ def album_artista(dame_artist_id):
     form = AlbumForm(csrf_enabled=False)
     if form.validate_on_submit():
         informacion = form.name.data + ":" + dame_artist_id
-        en_bytes = informacion.encode('ascii')
+        en_bytes = informacion.encode('utf-8')
         en_64 = base64.b64encode(en_bytes)
-        id_codificado = en_64.decode('ascii')
+        id_codificado = en_64.decode('utf-8')
         if len(id_codificado) > 22:
             id_codificado = id_codificado[:22]
         result = Album.query.filter_by(id=id_codificado).first()
