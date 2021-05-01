@@ -74,10 +74,10 @@ def album_artista(dame_artist_id):
         if result:
             abort(409, message="Album ya existente, intenta con otro")
         self_id = "https://t2musica.herokuapp.com/albums/" + id_codificado
-        artist_id = "https://t2musica.herokuapp.com/artists/" + dame_artist_id
+        artist_id2 = "https://t2musica.herokuapp.com/artists/" + dame_artist_id
         tracks_id = self_id + "/tracks"
         album = Album(id=id_codificado, artist_id = artist_id, name=form.name.data, genre=form.genre.data, \
-            artist_url=artist_id, tracks_url=tracks_id, self_url=self_id )
+            artist_url=artist_id2, tracks_url=tracks_id, self_url=self_id )
         db.session.add(album)
         db.session.commit()
     if form.name.errors:
