@@ -6,8 +6,8 @@ import base64
 class ArtistForm(FlaskForm):
     name = StringField('Name', validators = [DataRequired(),
                             Length(min = 1, max = 50)])
-    id = StringField('id', validators = [DataRequired(),
-                            Length(min = 1, max = 50)])
+    #id = StringField('id', validators = [DataRequired(),
+    #                       Length(min = 1, max = 50)])
     age = IntegerField('Age', validators = [DataRequired()])
     #id = base64.b64encode(name.encode('ascii')).decode('ascii')
     # if len(id) > 22:

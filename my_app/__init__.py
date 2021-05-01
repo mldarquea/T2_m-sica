@@ -18,3 +18,4 @@ if db:
     print('DB IS READY!!!\n')
 
 from my_app import routes
+from my_app import prueba
