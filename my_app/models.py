@@ -3,8 +3,8 @@ import base64
 from sqlalchemy.ext.hybrid import hybrid_property
 
 class Artist(db.Model):
-    #id_obligatorio = db.Column(db.Integer, primary_key=True)
-    id = db.Column(db.String(22), primary_key=True) 
+    id_obligatorio = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(22), unique=True) 
     name = db.Column(db.String(50), unique=True, nullable=False)
     age = db.Column(db.Integer, nullable=False)
     albums_url = name = db.Column(db.String(150), unique=True)
@@ -16,9 +16,9 @@ class Artist(db.Model):
         return f"Artist('{self.id}', '{self.name}', '{self.age}', '{self.albums_url}', '{self.tracks_url}', '{self.self_url}')"
 
 class Album(db.Model):
-    #id_obligatorio = db.Column(db.Integer, primary_key=True)
-    id = db.Column(db.String(22), primary_key=True)
-    artist_id = db.Column(db.String(22), db.ForeignKey("artist.id"), nullable=False)
+    id_obligatorio = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(22), unique=True)
+    artist_id = db.Column(db.Integer, db.ForeignKey("artist.id_obligatorio"), nullable=False)###############
     name = db.Column(db.String(50), unique=True, nullable=False)
     genre = db.Column(db.String(50), nullable=False)
     artist_url = name = db.Column(db.String(150), unique=True)
@@ -30,14 +30,19 @@ class Album(db.Model):
         return f"Album('{self.id}', '{self.artist_id}','{self.name}', '{self.genre}', '{self.artist_url}', '{self.tracks_url}', '{self.self_url}')"
 
 class Song(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id_obligatorio = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(22), unique=True)
+    album_id = db.Column(db.Integer, db.ForeignKey("album.id_obligatorio"), nullable=False) #####################
     name = db.Column(db.String(50), unique=True, nullable=False)
     duration = db.Column(db.Float, nullable=False)
     times_played = db.Column(db.Integer, nullable=False)
-    album_id = db.Column(db.Integer, db.ForeignKey("album.id"), nullable=False)
+    artist_url = name = db.Column(db.String(150), unique=True)
+    album_url = name = db.Column(db.String(150), unique=True)
+    self_url = name = db.Column(db.String(150), unique=True)
 
     def __repr__(self):
-        return f"Song('{self.id}', '{self.name}', '{self.duration}', '{self.times_played}')"
+        return f"Song('{self.id}', '{self.album_id}', '{self.name}', '{self.duration}', '{self.times_played}', \
+            '{self.artist_url}', '{self.album_url}', '{self.self_url}')"
 
 
 # Run migrations
