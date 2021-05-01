@@ -15,7 +15,7 @@ class Artist(db.Model):
 
 class Album(db.Model):
     id = db.Column(db.String(22), primary_key=True)
-    artist_id = db.Column(db.String(50), db.ForeignKey("artist.id"), nullable=False)###############
+    artist_id = db.Column(db.String(50), db.ForeignKey("artist.id"), nullable=False)#######
     name = db.Column(db.String(50), unique=True, nullable=False)
     genre = db.Column(db.String(50), nullable=False)
     artist_url = name = db.Column(db.String(150), unique=True)

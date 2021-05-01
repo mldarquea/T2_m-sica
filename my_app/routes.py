@@ -60,7 +60,7 @@ def album_artista(dame_artist_id):
         id_codificado = en_64.decode('ascii')
         if len(id_codificado) > 22:
             id_codificado = id_codificado[:22]
-        result = Artist.query.filter_by(id=id_codificado).first()
+        result = Album.query.filter_by(id=id_codificado).first()
         if result:
             abort(409, message="Album ya existente, intenta con otro")
         self_id = "https://t2musica.herokuapp.com/albums/" + id_codificado
