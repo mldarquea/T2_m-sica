@@ -49,3 +49,29 @@ def tracks():
     tracks = Song.query.all()
     a = [str(i) for i in tracks]
     return jsonify(a), 201
+
+@app.route('/artists/<dame_artist_id>/albums', methods=["GET", "POST"])
+def album_artista():
+    form = AlbumForm(csrf_enabled=False)
+    if form.validate_on_submit():
+        informacion = form.name.data + ":" + dame_artist_id
+        en_bytes = informacion.encode('ascii')
+        en_64 = base64.b64encode(en_bytes)
+        id_codificado = en_64.decode('ascii')
+        if len(id_codificado) > 22:
+            id_codificado = id_codificado[:22]
+        result = Artist.query.filter_by(id=id_codificado).first()
+        if result:
+            abort(409, message="Album ya existente, intenta con otro")
+        self_id = "https://t2musica.herokuapp.com/albums/" + id_codificado
+        artist_id = "https://t2musica.herokuapp.com/artists/" + dame_artist_id
+        tracks_id = self_id + "/tracks"
+        album = Album(id=id_codificado, artist_id = artist_id, name=form.name.data, genre=form.genre.data, \
+            artist_url=artist_id, tracks_url=tracks_id, self_url=self_id )
+        db.session.add(album)
+        db.session.commit()
+    if form.name.errors:
+        return "name error"
+    albums = Album.query.all()
+    a = [str(i) for i in albums]
+    return jsonify(a), 201
