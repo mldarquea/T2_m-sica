@@ -2,7 +2,6 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, FloatField
 from wtforms.validators import DataRequired, Length, ValidationError
 from my_app.models import Artist, Album, Song
-import base64
 class ArtistForm(FlaskForm):
     name = StringField('name', validators = [DataRequired(),
                             Length(min = 1, max = 50)])
@@ -37,4 +36,3 @@ class SongForm(FlaskForm):
     #     artist = Artist.query.filter_by(name = name.data).first()
     #     if artist:
     #         raise ValidationError('That name is taken, add another artist')
-    
