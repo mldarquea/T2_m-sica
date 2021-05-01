@@ -72,6 +72,6 @@ def album_artista(dame_artist_id):
         db.session.commit()
     if form.name.errors:
         return "name error"
-    albums = Album.query.all()
+    albums = Album.query.filter_by(artist_id=dame_artist_id)
     a = [str(i) for i in albums]
     return jsonify(a), 201
