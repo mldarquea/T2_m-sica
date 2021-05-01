@@ -1,10 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-#, create_engine
 from dotenv import load_dotenv
 import os
 
-#create_engine("sqlight:///myapp.db")
 # Load environmet variables
 load_dotenv('./env')
 

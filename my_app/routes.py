@@ -18,8 +18,6 @@ def artists():
         return "name error"
     if form.age.errors:
         return "age error"
-    # if form.hidden_tag().errors:
-    #     return "hidden tag"
     artists = Artist.query.all()
     a = [str(i) for i in artists]
     return jsonify({"artists":a})

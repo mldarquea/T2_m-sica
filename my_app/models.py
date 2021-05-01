@@ -3,32 +3,31 @@ import base64
 from sqlalchemy.ext.hybrid import hybrid_property
 
 class Artist(db.Model):
-    id_obligatorio = db.Column(db.Integer, primary_key=True)
-    id = db.Column(db.String(22), unique=True) #, nullable=False) #, primary_key=True)
+    #id_obligatorio = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(22), primary_key=True) 
     name = db.Column(db.String(50), unique=True, nullable=False)
     age = db.Column(db.Integer, nullable=False)
+    albums_url = name = db.Column(db.String(150), unique=True)
+    tracks_url = name = db.Column(db.String(150), unique=True)
+    self_url = name = db.Column(db.String(150), unique=True)
     albums = db.relationship("Album", lazy=True, backref="recorded")
-    #codificar_nombre = base64.b64encode(self.name.encode('ascii'))
-    
-    # def id_str(self):
-    #     casi_encoded = base64.b64encode(self.name.encode('ascii'))
-    #     self.id = casi_encoded.decode('ascii')
-    #     if len(id) > 22:
-    #         self.id = id[:21]
-    #     return id 
-
+     
     def __repr__(self):
-        return f"Artist('{base64.b64encode(self.name.encode('ascii')).decode('ascii')}', '{self.name}', '{self.age}')"
+        return f"Artist('{self.id}', '{self.name}', '{self.age}', '{self.albums_url}', '{self.tracks_url}', '{self.self_url}')"
 
 class Album(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    #id_obligatorio = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(22), primary_key=True)
+    artist_id = db.Column(db.Strin(22), db.ForeignKey("artist.id"), nullable=False)
     name = db.Column(db.String(50), unique=True, nullable=False)
     genre = db.Column(db.String(50), nullable=False)
-    artist_id = db.Column(db.Integer, db.ForeignKey("artist.id"), nullable=False)
+    artist_url = name = db.Column(db.String(150), unique=True)
+    tracks_url = name = db.Column(db.String(150), unique=True)
+    self_url = name = db.Column(db.String(150), unique=True)
     songs = db.relationship("Song", lazy=True, backref="included")
     
     def __repr__(self):
-        return f"Album('{self.id}', '{self.name}', '{self.genre}')"
+        return f"Album('{self.id}', '{self.artist_id}','{self.name}', '{self.genre}', '{self.artist_url}', '{self.tracks_url}', '{self.self_url}')"
 
 class Song(db.Model):
     id = db.Column(db.Integer, primary_key=True)
