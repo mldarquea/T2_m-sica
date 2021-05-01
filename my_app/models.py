@@ -12,7 +12,7 @@ class Artist(db.Model):
     albums = db.relationship("Album", lazy=True, backref="recorded")
      
     def __repr__(self):
-        return f"{id: '{self.id}',\nname:'{self.name}', '{self.age}', '{self.albums_url}', '{self.tracks_url}', '{self.self_url}')"
+        return f"{id: '{self.id}',\nname:'{self.name}', '{self.age}', '{self.albums_url}', '{self.tracks_url}', '{self.self_url}'}"
 
 class Album(db.Model):
     #id_obligatorio = db.Column(db.Integer, primary_key=True)
