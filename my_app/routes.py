@@ -50,8 +50,8 @@ def tracks():
     a = [str(i) for i in tracks]
     return jsonify(a), 201
 
-@app.route('/artists/<dame_artist_id>/albums', methods=["GET", "POST"])
-def album_artista():
+@app.route('/artists/<string:dame_artist_id>/albums', methods=["GET", "POST"])
+def album_artista(dame_artist_id):
     form = AlbumForm(csrf_enabled=False)
     if form.validate_on_submit():
         informacion = form.name.data + ":" + dame_artist_id
