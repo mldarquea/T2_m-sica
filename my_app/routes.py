@@ -52,7 +52,7 @@ def artists():
             "tracks": i.tracks_url,
             "self": i.self_url
         } for i in artists]
-    return jsonify(a), 201
+    return jsonify(a), 200
 
 @app.route('/albums', methods=["GET"])
 def albums():
@@ -67,7 +67,7 @@ def albums():
             "tracks": i.tracks_url,
             "self": i.self_url
         } for i in albums]
-    return jsonify(a), 201
+    return jsonify(a), 200
 
 @app.route('/tracks', methods=["GET"])
 def tracks():
@@ -83,7 +83,7 @@ def tracks():
             "album": i.album_url,
             "self": i.self_url
         } for i in tracks]
-    return jsonify(a), 201
+    return jsonify(a), 200
 
 @app.route('/artists/<string:dame_artist_id>/albums', methods=["GET", "POST"])
 def album_artista(dame_artist_id):
@@ -118,7 +118,10 @@ def album_artista(dame_artist_id):
             "tracks": i.tracks_url,
             "self": i.self_url
         } for i in albums]
-    return jsonify(a), 201
+    if form.validate_on_submit():
+        return jsonify(a), 201
+    else:
+        return jsonify(a), 200
 
 @app.route('/albums/<string:dame_album_id>/tracks', methods=["GET", "POST"])
 def cancion_album(dame_album_id):
@@ -153,4 +156,23 @@ def cancion_album(dame_album_id):
             "album": i.album_url,
             "self": i.self_url
         } for i in tracks]
-    return jsonify(a), 201
+    if form.validate_on_submit():
+        return jsonify(a), 201
+    else:
+        return jsonify(a), 200
+
+@app.route('/artists/<string:dame_artist_id>', methods=["GET"])
+def artistaxid(dame_artist_id):
+    artist_buscado = Artist.query.filter_by(id=dame_artist_id).first()
+    a = [{
+            "id": artist_buscado.id,
+            "album_id": artist_buscado.album_id, 
+            "name": str(artist_buscado.name),
+            "duration": artist_buscado.duration,
+            "times_played": artist_buscado.times_played,
+            "artist": artist_buscado.artist_url,
+            "album": artist_buscado.album_url,
+            "self": artist_buscado.self_url
+        }]
+    return jsonify(a), 200
+
