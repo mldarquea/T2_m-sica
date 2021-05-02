@@ -37,7 +37,7 @@ class Album(db.Model):
 
 class Song(db.Model):
     id = db.Column(db.String(22), primary_key=True)
-    album_id = db.Column(db.String(22), db.ForeignKey("album.id"), nullable=False) #####################
+    album_id = db.Column(db.String(22),  nullable=False) #####################
     name = db.Column(db.String(50), unique=True, nullable=False)
     duration = db.Column(db.Float, nullable=False)
     times_played = db.Column(db.Integer, nullable=False)
