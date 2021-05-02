@@ -42,7 +42,7 @@ def artists():
                 "tracks": artists.tracks_url,
                 "self": artists.self_url
             } ]
-        return jsonify(a), 201
+        return jsonify(a), 201, 'creado'
     if form.name.errors:
         return "name error"
     if form.age.errors:
