@@ -191,14 +191,71 @@ def borra_track(dame_track_id):
         } for i in track_buscado]
     if a == []:
         return 404
-    db.session.delete(a)
+    db.session.delete(a[0])
     db.session.commit()
     return 204
 
-# @app.route('/tracks/<string:dame_track_id>', methods=["DELETE"])
-# def borra_track(dame_track_id):
-#     track_buscado = Song.query.filter_by(id=dame_track_id).first()
-#     db.session.delete(track_buscado)
-#     db.session.commit()
-#     return 204
+@app.route('/albums/<string:dame_album_id>', methods=["DELETE"])
+def borra_album(dame_album_id):
+    album_buscado = Album.query.filter_by(id=dame_album_id)
+    a = [{
+            "id": i.id,
+            "artist_id": i.artist_id, 
+            "name": str(i.name),
+            "genre": i.genre,
+            "artist": i.artist_url,
+            "tracks": i.tracks_url,
+            "self": i.self_url
+        } for i in album_buscado]
+    if a == []:
+        return 404
+    db.session.delete(a)
+    db.session.commit()
+    ###Cascada
+    tracks_buscado = Song.query.filter_by(album_id=dame_album_id)
+    a = [{
+            "id": i.id,
+            "album_id": i.album_id, 
+            "name": str(i.name),
+            "duration": i.duration,
+            "times_played": i.times_played,
+            "artist": i.artist_url,
+            "album": i.album_url,
+            "self": i.self_url
+        } for i in tracks_buscado]
+    if a != []:
+        db.session.delete(a)
+        db.session.commit()
+    return 204
 
+@app.route('/artists/<string:dame_artist_id>', methods=["DELETE"])
+def borra_artista(dame_artist_id):
+    artist_buscado = Artist.query.filter_by(id=dame_artist_id)
+    a = [{
+            "id": i.id,
+            "name": str(i.name),
+            "age": i.age,
+            "albums": i.albums_url,
+            "tracks": i.tracks_url,
+            "self": i.self_url
+        } for i in artist_buscado]
+    if a == []:
+        return 404
+    db.session.delete(a)
+    db.session.commit()
+    ###Cascada########################
+    tracks_buscado = Song.query.filter_by(album_id=dame_album_id)
+    a = [{
+            "id": i.id,
+            "album_id": i.album_id, 
+            "name": str(i.name),
+            "duration": i.duration,
+            "times_played": i.times_played,
+            "artist": i.artist_url,
+            "album": i.album_url,
+            "self": i.self_url
+        } for i in tracks_buscado]
+    if a != []:
+        db.session.delete(a)
+        db.session.commit()
+    return 204
