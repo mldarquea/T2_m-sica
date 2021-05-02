@@ -119,3 +119,42 @@ def album_artista(dame_artist_id):
             "self": i.self_url
         } for i in albums]
     return jsonify(a), 201
+
+@app.route('/albums/<string:dame_album_id>/tracks', methods=["GET", "POST"])
+def cancion_album(dame_album_id):
+    form = SongForm()(csrf_enabled=False)
+    if form.validate_on_submit():
+        informacion = form.name.data + ":" + dame_album_id
+        en_bytes = informacion.encode('utf-8')
+        en_64 = base64.b64encode(en_bytes)
+        id_codificado = en_64.decode('utf-8')
+        if len(id_codificado) > 22:
+            id_codificado = id_codificado[:22]
+        result = Song.query.filter_by(id=id_codificado).first()
+        if result:
+            abort(409, message="Canción ya existente, intenta con otra")
+        self_id = "https://t2musica.herokuapp.com/tracks/" + id_codificado ##
+        buscando_album = Album.query.filter_by(id=dame_album_id).first()
+        print(buscando_album, "#################################")
+        #buscando_artista = Artist.query.filter_by(id=id_codificado).first()
+        artist_id2 = "https://t2musica.herokuapp.com/artists/" + dame_album_id
+        albums_id2 = "https://t2musica.herokuapp.com/albums/" + dame_album_id ##
+        song = Song(id=id_codificado, album_id = dame_album_id, name=form.name.data, duration=form.duration.data, \
+            times_played=0, artist_url=artist_id2, album_url=album_id, self_url=self_id )
+        db.session.add(song)
+        db.session.commit()
+    # if form.name.errors:
+    #     string = "name error"
+    #     return string 
+    tracks = Song.query.filter_by(album_id=dame_album_id)
+    a = [{
+            "id": i.id,
+            "album_id": i.album_id, 
+            "name": str(i.name),
+            "duration": i.duration,
+            "times_played": i.times_played,
+            "artist": i.artist_url,
+            "album": i.album_url,
+            "self": i.self_url
+        } for i in tracks]
+    return jsonify(a), 201

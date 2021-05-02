@@ -11,14 +11,6 @@ class Artist(db.Model):
     albums = db.relationship("Album", lazy=True, backref="recorded")
      
     def __repr__(self):
-        # return {
-        #     "id": self.id,
-        #     "name": self.name,
-        #     "age": self.age,
-        #     "albums": self.albums_url,
-        #     "tracks": self.tracks_url,
-        #     "self": self.self_url
-        # }
         return f"id: '{self.id}', name:'{self.name}', '{self.age}', '{self.albums_url}', '{self.tracks_url}', '{self.self_url}'"
 
 class Album(db.Model):
