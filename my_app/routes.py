@@ -180,7 +180,7 @@ def cancion_album(dame_album_id):
                 "artist": i.artist_url,
                 "album": i.album_url,
                 "self": i.self_url
-            } ]
+            }]
             return jsonify(a), 409
         self_id = "https://t2musica.herokuapp.com/tracks/" + id_codificado ##
         buscando_album = Album.query.filter_by(id=dame_album_id).first()
