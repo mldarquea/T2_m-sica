@@ -8,20 +8,20 @@ class Artist(db.Model):
     albums_url =  db.Column(db.String(150), unique=True)
     tracks_url = db.Column(db.String(150), unique=True)
     self_url =  db.Column(db.String(150), unique=True)
-    albums = db.relationship("Album", lazy=True, backref="recorded")
+    #albums = db.relationship("Album", lazy=True, backref="recorded")
      
     def __repr__(self):
         return f"id: '{self.id}', name:'{self.name}', '{self.age}', '{self.albums_url}', '{self.tracks_url}', '{self.self_url}'"
 
 class Album(db.Model):
     id = db.Column(db.String(22), primary_key=True)
-    artist_id = db.Column(db.String(50), db.ForeignKey("artist.id"), nullable=False)#######
+    artist_id = db.Column(db.String(50),  nullable=False)#######db.ForeignKey("artist.id"),
     name = db.Column(db.String(50), unique=True, nullable=False)
     genre = db.Column(db.String(50), nullable=False)
     artist_url = db.Column(db.String(150), unique=True)
     tracks_url = db.Column(db.String(150), unique=True)
     self_url =  db.Column(db.String(150), unique=True)
-    songs = db.relationship("Song", lazy=True, backref="included")
+    #songs = db.relationship("Song", lazy=True, backref="included")
     
     # def __dict__(self):
     #     return {
