@@ -13,7 +13,7 @@ def hello_world():
 def artists():
     form = ArtistForm(csrf_enabled=False)
     if request.method == 'POST' and form.validate_on_submit() == False:
-        return 400
+        abort(400, message="Datos mal ingresados")
     if form.validate_on_submit():
         name = form.name.data
         en_bytes = form.name.data.encode('utf-8')
