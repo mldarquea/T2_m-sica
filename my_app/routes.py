@@ -122,7 +122,7 @@ def album_artista(dame_artist_id):
 
 @app.route('/albums/<string:dame_album_id>/tracks', methods=["GET", "POST"])
 def cancion_album(dame_album_id):
-    form = SongForm()(csrf_enabled=False)
+    form = SongForm(csrf_enabled=False)
     if form.validate_on_submit():
         informacion = form.name.data + ":" + dame_album_id
         en_bytes = informacion.encode('utf-8')
