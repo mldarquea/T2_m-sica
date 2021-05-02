@@ -18,9 +18,9 @@ class Album(db.Model):
     artist_id = db.Column(db.String(50), db.ForeignKey("artist.id"), nullable=False)#######
     name = db.Column(db.String(50), unique=True, nullable=False)
     genre = db.Column(db.String(50), nullable=False)
-    artist_url = db.Column(db.String(150), unique=True)
-    tracks_url = db.Column(db.String(150), unique=True)
-    self_url =  db.Column(db.String(150), unique=True)
+    artist_url = db.Column(db.String(150), unique=False)
+    tracks_url = db.Column(db.String(150), unique=False)
+    self_url =  db.Column(db.String(150), unique=False)
     songs = db.relationship("Song", lazy=True, backref="included")
     
     # def __dict__(self):
@@ -40,11 +40,11 @@ class Album(db.Model):
 class Song(db.Model):
     id = db.Column(db.String(22), primary_key=True)
     album_id = db.Column(db.String(22), db.ForeignKey("album.id"), nullable=False) #####################
-    name = db.Column(db.String(50), unique=True, nullable=False)
+    name = db.Column(db.String(50), unique=False, nullable=False)
     duration = db.Column(db.Float, nullable=False)
     times_played = db.Column(db.Integer, nullable=False)
-    artist_url =  db.Column(db.String(150), unique=True)
-    album_url =  db.Column(db.String(150), unique=True)
+    artist_url =  db.Column(db.String(150), unique=False)
+    album_url =  db.Column(db.String(150), unique=False)
     self_url = db.Column(db.String(150), unique=True)
 
     def __repr__(self):
