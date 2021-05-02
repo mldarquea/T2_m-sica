@@ -33,7 +33,9 @@ class Album(db.Model):
     #         "tracks": self.tracks_url,
     #         "self": self.self_url
     #     }
-        #return f"Album('{self.id}', '{self.artist_id}','{self.name}', '{self.genre}', '{self.artist_url}', '{self.tracks_url}', '{self.self_url}')"
+    
+    def __repr__(self): 
+        return f"Album('{self.id}', '{self.artist_id}','{self.name}', '{self.genre}', '{self.artist_url}', '{self.tracks_url}', '{self.self_url}')"
 
 class Song(db.Model):
     id = db.Column(db.String(22), primary_key=True)

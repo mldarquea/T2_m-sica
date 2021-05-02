@@ -143,9 +143,6 @@ def cancion_album(dame_album_id):
             times_played=0, artist_url=artist_id2, album_url=albums_id2, self_url=self_id )
         db.session.add(song)
         db.session.commit()
-    # if form.name.errors:
-    #     string = "name error"
-    #     return string 
     tracks = Song.query.filter_by(album_id=dame_album_id)
     a = [{
             "id": i.id,
