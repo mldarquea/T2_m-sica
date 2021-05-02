@@ -12,7 +12,7 @@ def hello_world():
 @app.route('/artists', methods=["GET", "POST"])
 def artists():
     form = ArtistForm(csrf_enabled=False)
-    if request.method == 'POST' and form.validate() == False:
+    if request.method == 'POST' and form.validate_on_submit() == False:
         return 400
     if form.validate_on_submit():
         name = form.name.data
