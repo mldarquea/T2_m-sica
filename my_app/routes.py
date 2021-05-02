@@ -14,6 +14,8 @@ def artists():
     form = ArtistForm(csrf_enabled=False)
     if request.method == 'POST' and form.validate_on_submit() == False:
         abort(400, message="Datos mal ingresados")
+    if request.method not in ["GET", "POST"]:
+        abort(405, message="Método no implementado")
     if form.validate_on_submit():
         name = form.name.data
         en_bytes = form.name.data.encode('utf-8')
@@ -59,6 +61,8 @@ def artists():
 @app.route('/albums', methods=["GET"])
 def albums():
     form = AlbumForm(csrf_enabled=False)
+    if request.method not in ["GET"]:
+        abort(405, message="Método no implementado")
     albums = Album.query.all()
     a = [{
             "id": i.id,
@@ -74,6 +78,8 @@ def albums():
 @app.route('/tracks', methods=["GET"])
 def tracks():
     form = SongForm(csrf_enabled=False)
+    if request.method not in ["GET"]:
+        abort(405, message="Método no implementado")
     tracks = Song.query.all()
     a = [{
             "id": i.id,
@@ -90,6 +96,10 @@ def tracks():
 @app.route('/artists/<string:dame_artist_id>/albums', methods=["GET", "POST"])
 def album_artista(dame_artist_id):
     form = AlbumForm(csrf_enabled=False)
+    if request.method not in ["GET", "POST"]:
+        abort(405, message="Método no implementado")
+    if request.method == 'POST' and form.validate_on_submit() == False:
+        abort(400, message="Datos mal ingresados")
     if form.validate_on_submit():
         informacion = form.name.data + ":" + dame_artist_id
         en_bytes = informacion.encode('utf-8')
@@ -128,6 +138,10 @@ def album_artista(dame_artist_id):
 @app.route('/albums/<string:dame_album_id>/tracks', methods=["GET", "POST"])
 def cancion_album(dame_album_id):
     form = SongForm(csrf_enabled=False)
+    if request.method not in ["GET", "POST"]:
+        abort(405, message="Método no implementado")
+    if request.method == 'POST' and form.validate_on_submit() == False:
+        abort(400, message="Datos mal ingresados")
     if form.validate_on_submit():
         informacion = form.name.data + ":" + dame_album_id
         en_bytes = informacion.encode('utf-8')
@@ -165,6 +179,8 @@ def cancion_album(dame_album_id):
 
 @app.route('/artists/<string:dame_artist_id>', methods=["GET"])
 def artistaxid(dame_artist_id):
+    if request.method != "GET":
+        abort(405, message="Método no implementado")
     artist_buscado = Artist.query.filter_by(id=dame_artist_id).first()
     a = [{
             "id": artist_buscado.id,
@@ -180,6 +196,8 @@ def artistaxid(dame_artist_id):
 
 @app.route('/tracks/<string:dame_track_id>', methods=["DELETE"])
 def borra_track(dame_track_id):
+    if request.method != "DELETE":
+        abort(405, message="Método no implementado")
     track_buscado = Song.query.filter_by(id=dame_track_id)
     a = [{
             "id": i.id,
@@ -200,6 +218,8 @@ def borra_track(dame_track_id):
 
 @app.route('/albums/<string:dame_album_id>', methods=["DELETE"])
 def borra_album(dame_album_id):
+    if request.method != "DELETE":
+        abort(405, message="Método no implementado")
     album_buscado = Album.query.filter_by(id=dame_album_id)
     a = [{
             "id": i.id,
@@ -233,6 +253,8 @@ def borra_album(dame_album_id):
 
 @app.route('/artists/<string:dame_artist_id>', methods=["DELETE"])
 def borra_artista(dame_artist_id):
+    if request.method != "DELETE":
+        abort(405, message="Método no implementado")
     artist_buscado = Artist.query.filter_by(id=dame_artist_id)
     a = [{
             "id": i.id,
