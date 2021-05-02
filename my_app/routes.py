@@ -22,7 +22,7 @@ def artists():
         result = Artist.query.filter_by(id=id_codificado).first()
         if result:
             abort(409, message="Artista ya existente, intenta con otro")
-        self_id = "https://t2musica.herokuapp.com/" + id_codificado
+        self_id = "https://t2musica.herokuapp.com/artists/" + id_codificado
         albums_id = self_id + "/albums"
         tracks_id = self_id + "/tracks"
         artist = Artist(id=id_codificado, name=name, age=form.age.data, \
@@ -80,7 +80,7 @@ def tracks():
             "duration": i.duration,
             "times_played": i.times_played,
             "artist": i.artist_url,
-            "album": i.albums_url,
+            "album": i.album_url,
             "self": i.self_url
         } for i in tracks]
     return jsonify(a), 201
