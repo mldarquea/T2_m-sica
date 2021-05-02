@@ -13,8 +13,6 @@ class ArtistForm(FlaskForm):
     #         raise ValidationError('That name is taken, add another artist')
 
 class AlbumForm(FlaskForm):
-    # artist_id = StringField('artist_id', validators = [DataRequired(),
-    #                         Length(min = 1, max = 50)])
     name = StringField('name', validators = [DataRequired(),
                             Length(min = 1, max = 50)])
     genre = StringField('genre', validators = [DataRequired(),
@@ -26,8 +24,6 @@ class AlbumForm(FlaskForm):
             raise ValidationError('That name is taken, add another album')
 
 class SongForm(FlaskForm):
-    album_id = StringField('album_id', validators = [DataRequired(),
-                            Length(min = 1, max = 50)])
     name = StringField('name', validators = [DataRequired(),
                             Length(min = 1, max = 50)])
     duration = FloatField('duration', validators = [DataRequired()])
