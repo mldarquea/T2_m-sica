@@ -178,6 +178,24 @@ def artistaxid(dame_artist_id):
 
 @app.route('/tracks/<string:dame_track_id>', methods=["DELETE"])
 def borra_track(dame_track_id):
+    track_buscado = Song.query.filter_by(id=dame_track_id)
+    a = [{
+            "id": i.id,
+            "album_id": i.album_id, 
+            "name": str(i.name),
+            "duration": i.duration,
+            "times_played": i.times_played,
+            "artist": i.artist_url,
+            "album": i.album_url,
+            "self": i.self_url
+        } for i in track_buscado]
+    print(a, "########3", track_buscado)
+    db.session.delete(a)
+    db.session.commit()
+    return 204
+
+@app.route('/tracks/<string:dame_track_id>', methods=["DELETE"])
+def borra_track(dame_track_id):
     track_buscado = Song.query.filter_by(id=dame_track_id).first()
     db.session.delete(track_buscado)
     db.session.commit()
