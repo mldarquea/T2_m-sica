@@ -194,10 +194,10 @@ def borra_track(dame_track_id):
     db.session.commit()
     return 204
 
-@app.route('/tracks/<string:dame_track_id>', methods=["DELETE"])
-def borra_track(dame_track_id):
-    track_buscado = Song.query.filter_by(id=dame_track_id).first()
-    db.session.delete(track_buscado)
-    db.session.commit()
-    return 204
+# @app.route('/tracks/<string:dame_track_id>', methods=["DELETE"])
+# def borra_track(dame_track_id):
+#     track_buscado = Song.query.filter_by(id=dame_track_id).first()
+#     db.session.delete(track_buscado)
+#     db.session.commit()
+#     return 204
 
