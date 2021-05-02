@@ -35,7 +35,6 @@ def artists():
                     "self": artists.self_url
                 } ]
             return jsonify(a), 409
-            #abort(409, message="Artista ya existente, intenta con otro")
         self_id = "https://t2musica.herokuapp.com/artists/" + id_codificado
         albums_id = self_id + "/albums"
         tracks_id = self_id + "/tracks"
@@ -52,7 +51,7 @@ def artists():
                 "tracks": artists.tracks_url,
                 "self": artists.self_url
             } ]
-        return jsonify(a), 201, 'creado'
+        return jsonify(a), 201
     if form.name.errors:
         return "name error"
     if form.age.errors:
@@ -119,7 +118,17 @@ def album_artista(dame_artist_id):
             id_codificado = id_codificado[:22]
         result = Album.query.filter_by(id=id_codificado).first()
         if result:
-            abort(409, message="Album ya existente, intenta con otro")
+            i = Album.query.filter_by(id=id_codificado).first()
+            a = [ {
+                "id": i.id,
+                "artist_id": i.artist_id, 
+                "name": str(i.name),
+                "genre": i.genre,
+                "artist": i.artist_url,
+                "tracks": i.tracks_url,
+                "self": i.self_url
+            } ]
+            return jsonify(a), 409
         self_id = "https://t2musica.herokuapp.com/albums/" + id_codificado
         artist_id2 = "https://t2musica.herokuapp.com/artists/" + dame_artist_id
         tracks_id = self_id + "/tracks"
@@ -161,7 +170,18 @@ def cancion_album(dame_album_id):
             id_codificado = id_codificado[:22]
         result = Song.query.filter_by(id=id_codificado).first()
         if result:
-            abort(409, message="Canción ya existente, intenta con otra")
+            i = Song.query.filter_by(id=id_codificado).first()
+            a = [ {
+                "id": i.id,
+                "album_id": i.album_id, 
+                "name": str(i.name),
+                "duration": i.duration,
+                "times_played": i.times_played,
+                "artist": i.artist_url,
+                "album": i.album_url,
+                "self": i.self_url
+            } ]
+            return jsonify(a), 409
         self_id = "https://t2musica.herokuapp.com/tracks/" + id_codificado ##
         buscando_album = Album.query.filter_by(id=dame_album_id).first()
         buscando_artista = buscando_album.artist_id
