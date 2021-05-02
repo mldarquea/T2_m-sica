@@ -1,5 +1,5 @@
 from my_app import app, db
-from flask import render_template, jsonify, redirect, url_for
+from flask import render_template, jsonify, redirect, url_for, request
 from my_app.models import Artist, Album, Song
 from my_app.forms import ArtistForm, AlbumForm, SongForm
 from flask_restful import Api, Resource, reqparse, abort
