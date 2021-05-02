@@ -29,13 +29,21 @@ def artists():
             albums_url=albums_id, tracks_url=tracks_id, self_url=self_id )
         db.session.add(artist)
         db.session.commit()
+        artists = Artist.query.filter_by(id=id_codificado).first()
+        a = [  {
+                "id": i.id,
+                "name": str(i.name),
+                "age": i.age,
+                "albums": i.albums_url,
+                "tracks": i.tracks_url,
+                "self": i.self_url
+            } for i in artists]
+        return jsonify(a), 201
     if form.name.errors:
         return "name error"
     if form.age.errors:
         return "age error"
     artists = Artist.query.all()
-    for i in artists:
-        print(i.name)
     a = [  {
             "id": i.id,
             "name": str(i.name),
@@ -50,14 +58,31 @@ def artists():
 def albums():
     form = AlbumForm(csrf_enabled=False)
     albums = Album.query.all()
-    a = [str(i) for i in albums]
+    a = [{
+            "id": i.id,
+            "artist_id": i.artist_id, 
+            "name": str(i.name),
+            "genre": i.genre,
+            "artist": i.artist_url,
+            "tracks": i.tracks_url,
+            "self": i.self_url
+        } for i in albums]
     return jsonify(a), 201
 
 @app.route('/tracks', methods=["GET"])
 def tracks():
     form = SongForm(csrf_enabled=False)
     tracks = Song.query.all()
-    a = [str(i) for i in tracks]
+    a = [{
+            "id": i.id,
+            "album_id": i.album_id,
+            "name": str(i.name),
+            "duration": i.duration,
+            "times_played": i.times_played,
+            "artist": i.artist_url,
+            "album": i.albums_url,
+            "self": i.self_url
+        } for i in tracks]
     return jsonify(a), 201
 
 @app.route('/artists/<string:dame_artist_id>/albums', methods=["GET", "POST"])
@@ -84,5 +109,13 @@ def album_artista(dame_artist_id):
         string = "name error"
         return string 
     albums = Album.query.filter_by(artist_id=dame_artist_id)
-    a = [str(i) for i in albums]
+    a = [{
+            "id": i.id,
+            "artist_id": i.artist_id, 
+            "name": str(i.name),
+            "genre": i.genre,
+            "artist": i.artist_url,
+            "tracks": i.tracks_url,
+            "self": i.self_url
+        } for i in albums]
     return jsonify(a), 201
