@@ -211,16 +211,14 @@ def cancion_album(dame_album_id):
 def artistaxid(dame_artist_id):
     if request.method != "GET":
         abort(405, message="Método no implementado")
-    artist_buscado = Artist.query.filter_by(id=dame_artist_id).first()
+    i = Artist.query.filter_by(id=dame_artist_id).first()
     a = [{
-            "id": artist_buscado.id,
-            "album_id": artist_buscado.album_id, 
-            "name": str(artist_buscado.name),
-            "duration": artist_buscado.duration,
-            "times_played": artist_buscado.times_played,
-            "artist": artist_buscado.artist_url,
-            "album": artist_buscado.album_url,
-            "self": artist_buscado.self_url
+            "id": i.id,
+            "name": str(i.name),
+            "age": i.age,
+            "albums": i.albums_url,
+            "tracks": i.tracks_url,
+            "self": i.self_url
         }]
     return jsonify(a), 200
 
