@@ -135,9 +135,8 @@ def cancion_album(dame_album_id):
             abort(409, message="Canción ya existente, intenta con otra")
         self_id = "https://t2musica.herokuapp.com/tracks/" + id_codificado ##
         buscando_album = Album.query.filter_by(id=dame_album_id).first()
-        print(buscando_album.name, "#################################")
-        #buscando_artista = Artist.query.filter_by(id=id_codificado).first()
-        artist_id2 = "https://t2musica.herokuapp.com/artists/" + dame_album_id
+        buscando_artista = buscando_album.artist_id
+        artist_id2 = "https://t2musica.herokuapp.com/artists/" + buscando_artista
         albums_id2 = "https://t2musica.herokuapp.com/albums/" + dame_album_id ##
         song = Song(id=id_codificado, album_id = dame_album_id, name=form.name.data, duration=form.duration.data, \
             times_played=0, artist_url=artist_id2, album_url=albums_id2, self_url=self_id )
