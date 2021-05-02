@@ -31,13 +31,13 @@ def artists():
         db.session.commit()
         artists = Artist.query.filter_by(id=id_codificado).first()
         a = [  {
-                "id": i.id,
-                "name": str(i.name),
-                "age": i.age,
-                "albums": i.albums_url,
-                "tracks": i.tracks_url,
-                "self": i.self_url
-            } for i in artists]
+                "id": artists.id,
+                "name": str(artists.name),
+                "age": artists.age,
+                "albums": artists.albums_url,
+                "tracks": artists.tracks_url,
+                "self": artists.self_url
+            } ]
         return jsonify(a), 201
     if form.name.errors:
         return "name error"
