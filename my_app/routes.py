@@ -195,7 +195,7 @@ def borra_track(dame_track_id):
         Song.query.filter_by(id=dame_track_id).delete()
         #db.session.delete(track_buscado)
         db.session.commit()
-        return 204
+        return '', 204
 
 @app.route('/albums/<string:dame_album_id>', methods=["DELETE"])
 def borra_album(dame_album_id):
