@@ -23,17 +23,6 @@ class Album(db.Model):
     self_url =  db.Column(db.String(150), unique=False)
     songs = db.relationship("Song", lazy=True, backref="included")
     
-    # def __dict__(self):
-    #     return {
-    #         "id": self.id,
-    #         "artist_id": self.artist_id, 
-    #         "name": str(self.name),
-    #         "genre": self.genre,
-    #         "artist": self.artist_url,
-    #         "tracks": self.tracks_url,
-    #         "self": self.self_url
-    #     }
-    
     def __repr__(self): 
         return f"Album('{self.id}', '{self.artist_id}','{self.name}', '{self.genre}', '{self.artist_url}', '{self.tracks_url}', '{self.self_url}')"
 
