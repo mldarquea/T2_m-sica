@@ -12,6 +12,8 @@ def hello_world():
 @app.route('/artists', methods=["GET", "POST"])
 def artists():
     form = ArtistForm(csrf_enabled=False)
+    if request.method == 'POST' and form.validate() == False:
+        return 400
     if form.validate_on_submit():
         name = form.name.data
         en_bytes = form.name.data.encode('utf-8')
@@ -193,7 +195,6 @@ def borra_track(dame_track_id):
         return 404
     else: 
         Song.query.filter_by(id=dame_track_id).delete()
-        #db.session.delete(track_buscado)
         db.session.commit()
         return '', 204
 
@@ -211,7 +212,7 @@ def borra_album(dame_album_id):
         } for i in album_buscado]
     if a == []:
         return 404
-    db.session.delete(a)
+    Album.query.filter_by(id=dame_album_id).delete()
     db.session.commit()
     ###Cascada
     tracks_buscado = Song.query.filter_by(album_id=dame_album_id)
@@ -226,9 +227,9 @@ def borra_album(dame_album_id):
             "self": i.self_url
         } for i in tracks_buscado]
     if a != []:
-        db.session.delete(a)
+        Song.query.filter_by(album_id=dame_album_id).delete()
         db.session.commit()
-    return 204
+    return '', 204
 
 @app.route('/artists/<string:dame_artist_id>', methods=["DELETE"])
 def borra_artista(dame_artist_id):
@@ -243,10 +244,24 @@ def borra_artista(dame_artist_id):
         } for i in artist_buscado]
     if a == []:
         return 404
-    db.session.delete(a)
+    Artist.query.filter_by(id=dame_artist_id).delete()
     db.session.commit()
     ###Cascada########################
-    tracks_buscado = Song.query.filter_by(album_id=dame_album_id)
+    album_buscado = Album.query.filter_by(artist_id=dame_artist_id)
+    a = [{
+            "id": i.id,
+            "artist_id": i.artist_id, 
+            "name": str(i.name),
+            "genre": i.genre,
+            "artist": i.artist_url,
+            "tracks": i.tracks_url,
+            "self": i.self_url
+        } for i in album_buscado]
+    if a != []:
+        Album.query.filter_by(artist_id=dame_artist_id).delete()
+        db.session.commit()
+    link_tracks = "https://t2musica.herokuapp.com/artists/" + dame_artist_id
+    tracks_buscado = Song.query.filter_by(artist_url=link_tracks)
     a = [{
             "id": i.id,
             "album_id": i.album_id, 
@@ -258,6 +273,6 @@ def borra_artista(dame_artist_id):
             "self": i.self_url
         } for i in tracks_buscado]
     if a != []:
-        db.session.delete(a)
+        Song.query.filter_by(artist_url=link_tracks).delete()
         db.session.commit()
-    return 204
+    return '', 204
