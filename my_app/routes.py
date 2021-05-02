@@ -189,7 +189,8 @@ def borra_track(dame_track_id):
             "album": i.album_url,
             "self": i.self_url
         } for i in track_buscado]
-    print(a, "########3", track_buscado)
+    if a == []:
+        return 404
     db.session.delete(a)
     db.session.commit()
     return 204
