@@ -140,7 +140,7 @@ def cancion_album(dame_album_id):
         artist_id2 = "https://t2musica.herokuapp.com/artists/" + dame_album_id
         albums_id2 = "https://t2musica.herokuapp.com/albums/" + dame_album_id ##
         song = Song(id=id_codificado, album_id = dame_album_id, name=form.name.data, duration=form.duration.data, \
-            times_played=0, artist_url=artist_id2, album_url=album_id, self_url=self_id )
+            times_played=0, artist_url=artist_id2, album_url=albums_id2, self_url=self_id )
         db.session.add(song)
         db.session.commit()
     # if form.name.errors:
