@@ -260,7 +260,7 @@ def album_por_id(dame_album_id):
         }
         return jsonify(a), 200
     if request.method == "DELETE":
-        ##tracks
+        ######tracks
         tracks_buscado = Song.query.filter_by(album_id=dame_album_id)
         a = [{
                 "id": i.id,
