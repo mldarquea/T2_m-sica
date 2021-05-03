@@ -43,21 +43,21 @@ def artists():
         db.session.add(artist)
         db.session.commit()
         artists = Artist.query.filter_by(id=id_codificado).first()
-        a = [  {
+        a = [{
                 "id": artists.id,
                 "name": str(artists.name),
                 "age": artists.age,
                 "albums": artists.albums_url,
                 "tracks": artists.tracks_url,
                 "self": artists.self_url
-            } ]
+            }]
         return jsonify(a), 201
     if form.name.errors:
         return "name error"
     if form.age.errors:
         return "age error"
     artists = Artist.query.all()
-    a = [  {
+    a = [{
             "id": i.id,
             "name": str(i.name),
             "age": i.age,
@@ -242,7 +242,7 @@ def borra_track(dame_track_id):
     else: 
         Song.query.filter_by(id=dame_track_id).delete()
         db.session.commit()
-        return '', 204
+        return 'delete', 204
 
 @app.route('/albums/<string:dame_album_id>', methods=["DELETE"])
 def borra_album(dame_album_id):
@@ -277,7 +277,7 @@ def borra_album(dame_album_id):
     if a != []:
         Song.query.filter_by(album_id=dame_album_id).delete()
         db.session.commit()
-    return '', 204
+    return 'delete', 204
 
 @app.route('/artists/<string:dame_artist_id>', methods=["DELETE"])
 def borra_artista(dame_artist_id):
@@ -325,4 +325,4 @@ def borra_artista(dame_artist_id):
     if a != []:
         Song.query.filter_by(artist_url=link_tracks).delete()
         db.session.commit()
-    return '', 204
+    return 'delete', 204
