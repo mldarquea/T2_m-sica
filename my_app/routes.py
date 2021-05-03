@@ -217,6 +217,26 @@ def cancion_album(dame_album_id):
     else:
         return jsonify(a), 200
 
+@app.route('/artists/<string:dame_artist_id>/tracks', methods=["GET"])
+def cancion_artista(dame_artist_id):
+    if request.method not in ["GET"]:
+        abort(405, message="Método no implementado")
+    if not Artist.query.filter_by(id=dame_artist_id).first():
+        abort(404, message="Artista no existe")
+    link_tracks = "https://t2musica.herokuapp.com/artists/" + dame_artist_id
+    tracks_buscado = Song.query.filter_by(artist_url=link_tracks)
+    a = [{
+            "id": i.id,
+            "album_id": i.album_id, 
+            "name": str(i.name),
+            "duration": i.duration,
+            "times_played": i.times_played,
+            "artist": i.artist_url,
+            "album": i.album_url,
+            "self": i.self_url
+        } for i in tracks_buscado]
+    return jsonify(a), 200
+
 @app.route('/tracks/<string:dame_track_id>', methods=["GET","DELETE"])
 def track_por_id(dame_track_id):
     i = Song.query.filter_by(id=dame_track_id).first()
@@ -341,8 +361,6 @@ def reproduce_track(dame_track_id):
         abort(404, message="mato")
     if request.method != "PUT":
         abort(405, message="Método no implementado")
-    # track_actual = Song.query.filter_by(id=dame_track_id).first()
-    # track_actual.times_played += 1
     i = Song.query.filter_by(id=dame_track_id).first()
     a = {
             "id": i.id,
