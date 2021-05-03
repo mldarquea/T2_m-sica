@@ -351,16 +351,53 @@ def reproduce_track(dame_track_id):
     db.session.commit()
     return "yey   ", 200
 
-# @app.route('/albums/<string:dame_album_id>/tracks/play', methods=["PUT"])
-# def reproduce_track(dame_album_id):
-#     i = Album.query.filter_by(id=dame_album_id).first()
-#     if not i:
-#         abort(404, message="mato")
-#     if request.method != "PUT":
-#         abort(405, message="Método no implementado")
-#     album_actual = Album.query.filter_by(id=dame_album_id).first()
+@app.route('/albums/<string:dame_album_id>/tracks/play', methods=["PUT"])
+def reproduce_album(dame_album_id):
+    i = Album.query.filter_by(id=dame_album_id).first()
+    if not i:
+        abort(404, message="mato")
+    if request.method != "PUT":
+        abort(405, message="Método no implementado")
+    # track_actual = Song.query.filter_by(id=dame_track_id).first()
+    # track_actual.times_played += 1
+    canciones_album = Song.query.filter_by(album_id=dame_album_id)
+    for i in canciones_album:
+        a = {
+                "id": i.id,
+                "album_id": i.album_id, 
+                "name": str(i.name),
+                "duration": i.duration,
+                "times_played": i.times_played,
+                "artist": i.artist_url,
+                "album": i.album_url,
+                "self": i.self_url
+            } 
+        nuevas_reproducciones = a["times_played"] + 1
+        Song.query.filter_by(id=dame_track_id).update(dict(times_played=nuevas_reproducciones))
+        db.session.commit()
+    return "yey   ", 200
 
-#     track_actual = Song.query.filter_by(id=dame_album_id).first()
-#     track_actual.times_played += 1
-#     db.session.commit()
-#     return 200
+@app.route('/artists/<string:dame_artist_id>/albums/play', methods=["PUT"])
+def reproduce_artista(dame_artist_id):
+    i = Artist.query.filter_by(id=dame_artist_id).first()
+    if not i:
+        abort(404, message="mato")
+    if request.method != "PUT":
+        abort(405, message="Método no implementado")
+    link_artista = "https://t2musica.herokuapp.com/artists/" + dame_artist_id
+    canciones_album = Song.query.filter_by(artist_url=link_artista)
+    for i in canciones_album:
+        a = {
+                "id": i.id,
+                "album_id": i.album_id, 
+                "name": str(i.name),
+                "duration": i.duration,
+                "times_played": i.times_played,
+                "artist": i.artist_url,
+                "album": i.album_url,
+                "self": i.self_url
+            } 
+        nuevas_reproducciones = a["times_played"] + 1
+        Song.query.filter_by(id=dame_track_id).update(dict(times_played=nuevas_reproducciones))
+        db.session.commit()
+    return "yey   ", 200
