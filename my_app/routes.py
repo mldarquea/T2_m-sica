@@ -66,7 +66,7 @@ def artists():
             "self": i.self_url
         } for i in artists]
     return jsonify(a), 200
-
+####
 @app.route('/albums', methods=["GET"])
 def albums():
     form = AlbumForm(csrf_enabled=False)
