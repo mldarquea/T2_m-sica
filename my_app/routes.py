@@ -218,13 +218,14 @@ def cancion_album(dame_album_id):
         return jsonify(a), 200
 
 @app.route('/tracks/<string:dame_track_id>', methods=["GET","DELETE"])
-def borra_track(dame_track_id):
+def track_por_id(dame_track_id):
     i = Song.query.filter_by(id=dame_track_id).first()
     if not i:
         abort(404, message="mato")
     if request.method not in ["GET","DELETE"]:
-        abort(405, message="Método no implementado")
-    a = {
+        abort(405, message="Método no implementado") 
+    if request.method == "GET":
+        a = {
             "id": i.id,
             "album_id": i.album_id, 
             "name": str(i.name),
@@ -233,8 +234,7 @@ def borra_track(dame_track_id):
             "artist": i.artist_url,
             "album": i.album_url,
             "self": i.self_url
-        } 
-    if request.method == "GET":
+        }
         return jsonify(a), 200
     if request.method == "DELETE":
         Song.query.filter_by(id=dame_track_id).delete()
