@@ -240,7 +240,7 @@ def borra_track(dame_track_id):
     if not i:
         abort(404, message="mato")
     if request.method != "DELETE":
-        abort(404, message="Método no implementado")
+        abort(405, message="Método no implementado")
     a = {
             "id": i.id,
             "album_id": i.album_id, 
@@ -261,8 +261,7 @@ def borra_album(dame_album_id):
     if not i:
         abort(404, message="mato")
     if request.method != "DELETE":
-        abort(404, message="Método no implementado")
-    ####
+        abort(405, message="Método no implementado")
     ##tracks
     tracks_buscado = Song.query.filter_by(album_id=dame_album_id)
     a = [{
@@ -326,3 +325,15 @@ def borra_artista(dame_artist_id):
     Artist.query.filter_by(id=dame_artist_id).delete()
     db.session.commit() 
     return 'delete', 204
+
+@app.route('/tracks/<string:dame_track_id>/play', methods=["PUT"])
+def reproduce_track(dame_track_id):
+    i = Song.query.filter_by(id=dame_track_id).first()
+    if not i:
+        abort(404, message="mato")
+    if request.method != "PUT":
+        abort(405, message="Método no implementado")
+    track_actual = Song.query.filter_by(id=dame_track_id).first()
+    track_actual.times_played += 1
+    db.session.commit()
+    return 200
