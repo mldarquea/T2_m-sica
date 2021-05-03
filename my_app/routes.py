@@ -381,7 +381,7 @@ def reproduce_album(dame_album_id):
                 "self": i.self_url
             } 
         nuevas_reproducciones = a["times_played"] + 1
-        Song.query.filter_by(id=dame_track_id).update(dict(times_played=nuevas_reproducciones))
+        Song.query.filter_by(album_id=dame_album_id).update(dict(times_played=nuevas_reproducciones))
         db.session.commit()
     return "yey   ", 200
 
@@ -406,6 +406,6 @@ def reproduce_artista(dame_artist_id):
                 "self": i.self_url
             } 
         nuevas_reproducciones = a["times_played"] + 1
-        Song.query.filter_by(id=dame_track_id).update(dict(times_played=nuevas_reproducciones))
+        Song.query.filter_by(artist_url=link_artista).update(dict(times_played=nuevas_reproducciones))
         db.session.commit()
     return "yey   ", 200
