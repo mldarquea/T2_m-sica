@@ -107,6 +107,8 @@ def album_artista(dame_artist_id):
     form = AlbumForm(csrf_enabled=False)
     if request.method not in ["GET", "POST"]:
         abort(405, message="Método no implementado")
+    if not Artist.query.filter_by(id=dame_artist_id):
+        abort(422, message="Artista no existe")
     if request.method == 'POST' and form.validate_on_submit() == False:
         abort(400, message="Datos mal ingresados")
     if form.validate_on_submit():
@@ -119,7 +121,7 @@ def album_artista(dame_artist_id):
         result = Album.query.filter_by(id=id_codificado).first()
         if result:
             i = Album.query.filter_by(id=id_codificado).first()
-            a = [ {
+            a = {
                 "id": i.id,
                 "artist_id": i.artist_id, 
                 "name": str(i.name),
@@ -127,7 +129,7 @@ def album_artista(dame_artist_id):
                 "artist": i.artist_url,
                 "tracks": i.tracks_url,
                 "self": i.self_url
-            } ]
+            }
             return jsonify(a), 409
         self_id = "https://t2musica.herokuapp.com/albums/" + id_codificado
         artist_id2 = "https://t2musica.herokuapp.com/artists/" + dame_artist_id
@@ -171,7 +173,7 @@ def cancion_album(dame_album_id):
         result = Song.query.filter_by(id=id_codificado).first()
         if result:
             i = Song.query.filter_by(id=id_codificado).first()
-            a = [ {
+            a = {
                 "id": i.id,
                 "album_id": i.album_id, 
                 "name": str(i.name),
@@ -180,7 +182,7 @@ def cancion_album(dame_album_id):
                 "artist": i.artist_url,
                 "album": i.album_url,
                 "self": i.self_url
-            }]
+            }
             return jsonify(a), 409
         self_id = "https://t2musica.herokuapp.com/tracks/" + id_codificado ##
         buscando_album = Album.query.filter_by(id=dame_album_id).first()
@@ -212,14 +214,14 @@ def artistaxid(dame_artist_id):
     if request.method != "GET":
         abort(405, message="Método no implementado")
     i = Artist.query.filter_by(id=dame_artist_id).first()
-    a = [{
+    a = {
             "id": i.id,
             "name": str(i.name),
             "age": i.age,
             "albums": i.albums_url,
             "tracks": i.tracks_url,
             "self": i.self_url
-        }]
+        }
     return jsonify(a), 200
 
 @app.route('/tracks/<string:dame_track_id>', methods=["DELETE"])
