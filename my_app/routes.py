@@ -216,6 +216,8 @@ def artistaxid(dame_artist_id):
     if request.method != "GET":
         abort(405, message="Método no implementado")
     i = Artist.query.filter_by(id=dame_artist_id).first()
+    if not i:
+        abort(404, message="mato")
     a = {
             "id": i.id,
             "name": str(i.name),
@@ -230,8 +232,10 @@ def artistaxid(dame_artist_id):
 def borra_track(dame_track_id):
     if request.method != "DELETE":
         abort(405, message="Método no implementado")
-    track_buscado = Song.query.filter_by(id=dame_track_id)
-    a = [{
+    i = Song.query.filter_by(id=dame_track_id).first()
+    if not i:
+        abort(404, message="mato")
+    a = {
             "id": i.id,
             "album_id": i.album_id, 
             "name": str(i.name),
@@ -240,30 +244,18 @@ def borra_track(dame_track_id):
             "artist": i.artist_url,
             "album": i.album_url,
             "self": i.self_url
-        } for i in track_buscado]
-    if a == []:
-        return 404
-    else: 
-        Song.query.filter_by(id=dame_track_id).delete()
-        db.session.commit()
-        return 'delete', 204
+        } 
+    Song.query.filter_by(id=dame_track_id).delete()
+    db.session.commit()
+    return 'delete', 204
 
 @app.route('/albums/<string:dame_album_id>', methods=["DELETE"])
 def borra_album(dame_album_id):
     if request.method != "DELETE":
         abort(405, message="Método no implementado")
-    album_buscado = Album.query.filter_by(id=dame_album_id)
-    a = [{
-            "id": i.id,
-            "artist_id": i.artist_id, 
-            "name": str(i.name),
-            "genre": i.genre,
-            "artist": i.artist_url,
-            "tracks": i.tracks_url,
-            "self": i.self_url
-        } for i in album_buscado]
-    if a == []:
-        return 404
+    i = Album.query.filter_by(id=dame_album_id).first()
+    if not i:
+        abort(404, message="mato")
     Album.query.filter_by(id=dame_album_id).delete()
     db.session.commit()
     ###Cascada
@@ -287,17 +279,9 @@ def borra_album(dame_album_id):
 def borra_artista(dame_artist_id):
     if request.method != "DELETE":
         abort(405, message="Método no implementado")
-    artist_buscado = Artist.query.filter_by(id=dame_artist_id)
-    a = [{
-            "id": i.id,
-            "name": str(i.name),
-            "age": i.age,
-            "albums": i.albums_url,
-            "tracks": i.tracks_url,
-            "self": i.self_url
-        } for i in artist_buscado]
-    if a == []:
-        return 404
+    i = Artist.query.filter_by(id=dame_artist_id).first()
+    if not i:
+        abort(404, message="mato")
     Artist.query.filter_by(id=dame_artist_id).delete()
     db.session.commit()
     ###Cascada########################
