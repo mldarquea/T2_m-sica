@@ -26,14 +26,14 @@ def artists():
         result = Artist.query.filter_by(id=id_codificado).first()
         if result:
             artists = Artist.query.filter_by(id=id_codificado).first()
-            a = [  {
+            a =   {
                     "id": artists.id,
                     "name": str(artists.name),
                     "age": artists.age,
                     "albums": artists.albums_url,
                     "tracks": artists.tracks_url,
                     "self": artists.self_url
-                } ]
+                } 
             return jsonify(a), 409
         self_id = "https://t2musica.herokuapp.com/artists/" + id_codificado
         albums_id = self_id + "/albums"
@@ -43,14 +43,14 @@ def artists():
         db.session.add(artist)
         db.session.commit()
         artists = Artist.query.filter_by(id=id_codificado).first()
-        a = [{
+        a = {
                 "id": artists.id,
                 "name": str(artists.name),
                 "age": artists.age,
                 "albums": artists.albums_url,
                 "tracks": artists.tracks_url,
                 "self": artists.self_url
-            }]
+            }
         return jsonify(a), 201
     if form.name.errors:
         return "name error"
