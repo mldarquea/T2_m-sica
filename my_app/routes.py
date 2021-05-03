@@ -217,29 +217,12 @@ def cancion_album(dame_album_id):
     else:
         return jsonify(a), 200
 
-@app.route('/artists/<string:dame_artist_id>', methods=["GET"])
-def artistaxid(dame_artist_id):
-    if request.method != "GET":
-        abort(405, message="Método no implementado")
-    i = Artist.query.filter_by(id=dame_artist_id).first()
-    if not i:
-        abort(404, message="mato")
-    a = {
-            "id": i.id,
-            "name": str(i.name),
-            "age": i.age,
-            "albums": i.albums_url,
-            "tracks": i.tracks_url,
-            "self": i.self_url
-        }
-    return jsonify(a), 200
-
-@app.route('/tracks/<string:dame_track_id>', methods=["DELETE"])
+@app.route('/tracks/<string:dame_track_id>', methods=["GET","DELETE"])
 def borra_track(dame_track_id):
     i = Song.query.filter_by(id=dame_track_id).first()
     if not i:
         abort(404, message="mato")
-    if request.method != "DELETE":
+    if request.method not in ["GET","DELETE"]:
         abort(405, message="Método no implementado")
     a = {
             "id": i.id,
@@ -251,64 +234,22 @@ def borra_track(dame_track_id):
             "album": i.album_url,
             "self": i.self_url
         } 
-    Song.query.filter_by(id=dame_track_id).delete()
-    db.session.commit()
-    return 'delete', 204
+    if request.method == "GET":
+        return jsonify(a), 200
+    if request.method == "DELETE":
+        Song.query.filter_by(id=dame_track_id).delete()
+        db.session.commit()
+        return 'delete', 204
 
-@app.route('/albums/<string:dame_album_id>', methods=["DELETE"])
-def borra_album(dame_album_id):
+@app.route('/albums/<string:dame_album_id>', methods=["GET","DELETE"])
+def album_por_id(dame_album_id):
     i = Album.query.filter_by(id=dame_album_id).first()
     if not i:
         abort(404, message="mato")
-    if request.method != "DELETE":
+    if request.method not in ["GET","DELETE"]:
         abort(405, message="Método no implementado")
-    ##tracks
-    tracks_buscado = Song.query.filter_by(album_id=dame_album_id)
-    a = [{
-            "id": i.id,
-            "album_id": i.album_id, 
-            "name": str(i.name),
-            "duration": i.duration,
-            "times_played": i.times_played,
-            "artist": i.artist_url,
-            "album": i.album_url,
-            "self": i.self_url
-        } for i in tracks_buscado]
-    if a != []:
-        Song.query.filter_by(album_id=dame_album_id).delete()
-        db.session.commit()
-    ###Album
-    Album.query.filter_by(id=dame_album_id).delete()
-    db.session.commit()
-    return 'delete', 204
-
-@app.route('/artists/<string:dame_artist_id>', methods=["DELETE"])
-def borra_artista(dame_artist_id):
-    i = Artist.query.filter_by(id=dame_artist_id).first()
-    if not i:
-        abort(404, message="mato")
-    if request.method != "DELETE":
-        abort(405, message="Método no implementado")
-    
-    ####Tracks
-    link_tracks = "https://t2musica.herokuapp.com/artists/" + dame_artist_id
-    tracks_buscado = Song.query.filter_by(artist_url=link_tracks)
-    a = [{
-            "id": i.id,
-            "album_id": i.album_id, 
-            "name": str(i.name),
-            "duration": i.duration,
-            "times_played": i.times_played,
-            "artist": i.artist_url,
-            "album": i.album_url,
-            "self": i.self_url
-        } for i in tracks_buscado]
-    if a != []:
-        Song.query.filter_by(artist_url=link_tracks).delete()
-        db.session.commit()
-    ####Albums
-    album_buscado = Album.query.filter_by(artist_id=dame_artist_id)
-    a = [{
+    if request.method == "GET":
+        a = {
             "id": i.id,
             "artist_id": i.artist_id, 
             "name": str(i.name),
@@ -316,15 +257,82 @@ def borra_artista(dame_artist_id):
             "artist": i.artist_url,
             "tracks": i.tracks_url,
             "self": i.self_url
-        } for i in album_buscado]
-    if a != []:
-        Album.query.filter_by(artist_id=dame_artist_id).delete()
+        }
+        return jsonify(a), 200
+    if request.method == "DELETE":
+        ##tracks
+        tracks_buscado = Song.query.filter_by(album_id=dame_album_id)
+        a = [{
+                "id": i.id,
+                "album_id": i.album_id, 
+                "name": str(i.name),
+                "duration": i.duration,
+                "times_played": i.times_played,
+                "artist": i.artist_url,
+                "album": i.album_url,
+                "self": i.self_url
+            } for i in tracks_buscado]
+        if a != []:
+            Song.query.filter_by(album_id=dame_album_id).delete()
+            db.session.commit()
+        ###Album
+        Album.query.filter_by(id=dame_album_id).delete()
         db.session.commit()
+        return 'delete', 204
 
-    ###ARtist
-    Artist.query.filter_by(id=dame_artist_id).delete()
-    db.session.commit() 
-    return 'delete', 204
+@app.route('/artists/<string:dame_artist_id>', methods=["GET", "DELETE"])
+def artista_por_id(dame_artist_id):
+    i = Artist.query.filter_by(id=dame_artist_id).first()
+    if not i:
+        abort(404, message="mato")
+    if request.method not in ["GET", "DELETE"]:
+        abort(405, message="Método no implementado")
+    if request.method == "GET":
+        a = {
+                "id": i.id,
+                "name": str(i.name),
+                "age": i.age,
+                "albums": i.albums_url,
+                "tracks": i.tracks_url,
+                "self": i.self_url
+            }
+        return jsonify(a), 200
+    if request.method == "DELETE":
+        ####Tracks
+        link_tracks = "https://t2musica.herokuapp.com/artists/" + dame_artist_id
+        tracks_buscado = Song.query.filter_by(artist_url=link_tracks)
+        a = [{
+                "id": i.id,
+                "album_id": i.album_id, 
+                "name": str(i.name),
+                "duration": i.duration,
+                "times_played": i.times_played,
+                "artist": i.artist_url,
+                "album": i.album_url,
+                "self": i.self_url
+            } for i in tracks_buscado]
+        if a != []:
+            Song.query.filter_by(artist_url=link_tracks).delete()
+            db.session.commit()
+        ####Albums
+        album_buscado = Album.query.filter_by(artist_id=dame_artist_id)
+        a = [{
+                "id": i.id,
+                "artist_id": i.artist_id, 
+                "name": str(i.name),
+                "genre": i.genre,
+                "artist": i.artist_url,
+                "tracks": i.tracks_url,
+                "self": i.self_url
+            } for i in album_buscado]
+        if a != []:
+            Album.query.filter_by(artist_id=dame_artist_id).delete()
+            db.session.commit()
+
+        ###ARtist
+        Artist.query.filter_by(id=dame_artist_id).delete()
+        db.session.commit() 
+        return 'delete', 204
 
 @app.route('/tracks/<string:dame_track_id>/play', methods=["PUT"])
 def reproduce_track(dame_track_id):
