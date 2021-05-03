@@ -333,7 +333,22 @@ def reproduce_track(dame_track_id):
         abort(404, message="mato")
     if request.method != "PUT":
         abort(405, message="Método no implementado")
-    track_actual = Song.query.filter_by(id=dame_track_id).first()
-    track_actual.times_played += 1
+    # track_actual = Song.query.filter_by(id=dame_track_id).first()
+    # track_actual.times_played += 1
+    track_actual = Song.query.filter_by(id=dame_track_id).update(times_played=1)
     db.session.commit()
     return 200
+
+# @app.route('/albums/<string:dame_album_id>/tracks/play', methods=["PUT"])
+# def reproduce_track(dame_album_id):
+#     i = Album.query.filter_by(id=dame_album_id).first()
+#     if not i:
+#         abort(404, message="mato")
+#     if request.method != "PUT":
+#         abort(405, message="Método no implementado")
+#     album_actual = Album.query.filter_by(id=dame_album_id).first()
+
+#     track_actual = Song.query.filter_by(id=dame_album_id).first()
+#     track_actual.times_played += 1
+#     db.session.commit()
+#     return 200
