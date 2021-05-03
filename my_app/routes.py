@@ -346,7 +346,7 @@ def reproduce_track(dame_track_id):
             "album": i.album_url,
             "self": i.self_url
         } 
-    nuevas_reproducciones = a[times_played] + 1
+    nuevas_reproducciones = a["times_played"] + 1
     print("query#################3", a, nuevas_reproducciones )
     Song.query.filter_by(id=dame_track_id).update(dict(times_played=nuevas_reproducciones))
     db.session.commit()
