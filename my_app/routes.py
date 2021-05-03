@@ -240,7 +240,7 @@ def borra_track(dame_track_id):
     if not i:
         abort(404, message="mato")
     if request.method != "DELETE":
-        abort(405, message="Método no implementado")
+        abort(404, message="Método no implementado")
     a = {
             "id": i.id,
             "album_id": i.album_id, 
@@ -261,7 +261,7 @@ def borra_album(dame_album_id):
     if not i:
         abort(404, message="mato")
     if request.method != "DELETE":
-        abort(405, message="Método no implementado")
+        abort(404, message="Método no implementado")
     ##tracks
     tracks_buscado = Song.query.filter_by(album_id=dame_album_id)
     a = [{
