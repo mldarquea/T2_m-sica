@@ -108,7 +108,10 @@ def album_artista(dame_artist_id):
     if request.method not in ["GET", "POST"]:
         abort(405, message="Método no implementado")
     if not Artist.query.filter_by(id=dame_artist_id).first():
-        abort(422, message="Artista no existe")
+        if request.method == "POST":
+            abort(422, message="Artista no existe")
+        if request.method == "GET":
+            abort(404, message="Artista no existe")
     if request.method == 'POST' and form.validate_on_submit() == False:
         abort(400, message="Datos mal ingresados")
     if form.validate_on_submit():
@@ -141,8 +144,8 @@ def album_artista(dame_artist_id):
     if form.name.errors:
         string = "name error"
         return string 
-    i = Album.query.filter_by(artist_id=dame_artist_id).first()
-    a = {
+    albumes_r = Album.query.filter_by(artist_id=dame_artist_id)
+    a = [{
             "id": i.id,
             "artist_id": i.artist_id, 
             "name": str(i.name),
@@ -150,7 +153,7 @@ def album_artista(dame_artist_id):
             "artist": i.artist_url,
             "tracks": i.tracks_url,
             "self": i.self_url
-        } 
+        } for i in albumes_r]
     if form.validate_on_submit():
         return jsonify(a), 201
     else:
@@ -162,7 +165,10 @@ def cancion_album(dame_album_id):
     if request.method not in ["GET", "POST"]:
         abort(405, message="Método no implementado")
     if not Album.query.filter_by(id=dame_album_id).first():
-        abort(422, message="Album no existe")
+        if request.method == "POST":
+            abort(422, message="Artista no existe")
+        if request.method == "GET":
+            abort(404, message="Artista no existe")
     if request.method == 'POST' and form.validate_on_submit() == False:
         abort(400, message="Datos mal ingresados")
     if form.validate_on_submit():
@@ -195,8 +201,8 @@ def cancion_album(dame_album_id):
             times_played=0, artist_url=artist_id2, album_url=albums_id2, self_url=self_id )
         db.session.add(song)
         db.session.commit()
-    i = Song.query.filter_by(album_id=dame_album_id).first()
-    a = {
+    raro = Song.query.filter_by(album_id=dame_album_id)
+    a = [{
             "id": i.id,
             "album_id": i.album_id, 
             "name": str(i.name),
@@ -205,7 +211,7 @@ def cancion_album(dame_album_id):
             "artist": i.artist_url,
             "album": i.album_url,
             "self": i.self_url
-        } 
+        } for i in raro]
     if form.validate_on_submit():
         return jsonify(a), 201
     else:
