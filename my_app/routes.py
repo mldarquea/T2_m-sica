@@ -107,7 +107,6 @@ def album_artista(dame_artist_id):
     form = AlbumForm(csrf_enabled=False)
     if request.method not in ["GET", "POST"]:
         abort(405, message="Método no implementado")
-    print(Artist.query.filter_by(id=dame_artist_id).first(), "###################################")
     if not Artist.query.filter_by(id=dame_artist_id).first():
         abort(422, message="Artista no existe")
     if request.method == 'POST' and form.validate_on_submit() == False:
@@ -162,7 +161,7 @@ def cancion_album(dame_album_id):
     form = SongForm(csrf_enabled=False)
     if request.method not in ["GET", "POST"]:
         abort(405, message="Método no implementado")
-    if not Album.query.filter_by(id=dame_album_id):
+    if not Album.query.filter_by(id=dame_album_id).first():
         abort(422, message="Album no existe")
     if request.method == 'POST' and form.validate_on_submit() == False:
         abort(400, message="Datos mal ingresados")
