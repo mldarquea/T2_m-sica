@@ -141,8 +141,8 @@ def album_artista(dame_artist_id):
     if form.name.errors:
         string = "name error"
         return string 
-    albums = Album.query.filter_by(artist_id=dame_artist_id)
-    a = [{
+    i = Album.query.filter_by(artist_id=dame_artist_id).first()
+    a = {
             "id": i.id,
             "artist_id": i.artist_id, 
             "name": str(i.name),
@@ -150,7 +150,7 @@ def album_artista(dame_artist_id):
             "artist": i.artist_url,
             "tracks": i.tracks_url,
             "self": i.self_url
-        } for i in albums]
+        } 
     if form.validate_on_submit():
         return jsonify(a), 201
     else:
@@ -195,8 +195,8 @@ def cancion_album(dame_album_id):
             times_played=0, artist_url=artist_id2, album_url=albums_id2, self_url=self_id )
         db.session.add(song)
         db.session.commit()
-    tracks = Song.query.filter_by(album_id=dame_album_id)
-    a = [{
+    i = Song.query.filter_by(album_id=dame_album_id).first()
+    a = {
             "id": i.id,
             "album_id": i.album_id, 
             "name": str(i.name),
@@ -205,7 +205,7 @@ def cancion_album(dame_album_id):
             "artist": i.artist_url,
             "album": i.album_url,
             "self": i.self_url
-        } for i in tracks]
+        } 
     if form.validate_on_submit():
         return jsonify(a), 201
     else:
