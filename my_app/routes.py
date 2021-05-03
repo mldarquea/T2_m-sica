@@ -347,10 +347,9 @@ def reproduce_track(dame_track_id):
             "self": i.self_url
         } 
     nuevas_reproducciones = a["times_played"] + 1
-    print("query#################3", a, nuevas_reproducciones )
     Song.query.filter_by(id=dame_track_id).update(dict(times_played=nuevas_reproducciones))
     db.session.commit()
-    return 200
+    return 200, "   "
 
 # @app.route('/albums/<string:dame_album_id>/tracks/play', methods=["PUT"])
 # def reproduce_track(dame_album_id):
