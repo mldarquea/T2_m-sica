@@ -335,8 +335,20 @@ def reproduce_track(dame_track_id):
         abort(405, message="Método no implementado")
     # track_actual = Song.query.filter_by(id=dame_track_id).first()
     # track_actual.times_played += 1
-    print("query#################3", Song.query.filter_by(id=dame_track_id).first() )
-    Song.query.filter_by(id=dame_track_id).update(dict(times_played=1))
+    i = Song.query.filter_by(id=dame_track_id).first()
+    a = {
+            "id": i.id,
+            "album_id": i.album_id, 
+            "name": str(i.name),
+            "duration": i.duration,
+            "times_played": i.times_played,
+            "artist": i.artist_url,
+            "album": i.album_url,
+            "self": i.self_url
+        } 
+    nuevas_reproducciones = a[times_played] + 1
+    print("query#################3", a, nuevas_reproducciones )
+    Song.query.filter_by(id=dame_track_id).update(dict(times_played=nuevas_reproducciones))
     db.session.commit()
     return 200
 
